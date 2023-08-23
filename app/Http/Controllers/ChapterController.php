@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chapter;
-use App\Models\Novel;
 use Illuminate\Http\Request;
 use App\Http\Resources\ChapterCollection;
 use App\Http\Resources\ChapterResource;
@@ -24,7 +23,7 @@ class ChapterController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required|unique:chapters|max:255',
+            'title' => 'required|max:255',
             'content' => 'required',
         ]);
 
@@ -52,16 +51,34 @@ class ChapterController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Novel $novel)
+    public function update(Request $request, Chapter $chapter)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'content' => 'required',
+        ]);
+
+        $chapter->update([
+            'title' => $request->input('title'),
+            'content' => $request->input('content'),
+        ]);
+
+        // $chapter->title = $request->input('title');
+        // $chapter->content = $request->input('content');
+        // $chapter->save();
+
+        return (new ChapterResource($chapter))
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Novel $novel)
+    public function destroy(Chapter $chapter)
     {
-        //
+        $chapter->delete();
+
+        return response()->json(null, 204);
     }
 }

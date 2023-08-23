@@ -28,6 +28,17 @@ class NovelController extends Controller
             'author' => 'required',
             'cover' => 'required',
         ]);
+
+        $novel = Novel::create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'author' => $request->input('author'),
+            'cover' => $request->input('cover'),
+        ]);
+
+        return (new NovelResource($novel))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -45,7 +56,25 @@ class NovelController extends Controller
      */
     public function update(Request $request, Novel $novel)
     {
-        //
+        $this->validate($request, [
+            'title' => 'sometimes|max:255', // Allow empty value
+            'description' => 'sometimes',    // Allow empty value
+            'author' => 'sometimes',         // Allow empty value
+            'cover' => 'sometimes',          // Allow empty value
+        ]);
+
+        $novelData = [
+            'title' => $request->input('title', $novel->title), // Use old value if new value is null
+            'description' => $request->input('description', $novel->description), // Use old value if new value is null
+            'author' => $request->input('author', $novel->author), // Use old value if new value is null
+            'cover' => $request->input('cover', $novel->cover), // Use old value if new value is null
+        ];
+
+        $novel->update($novelData);
+
+        return (new NovelResource($novel))
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -53,6 +82,8 @@ class NovelController extends Controller
      */
     public function destroy(Novel $novel)
     {
-        //
+        $novel->delete();
+
+        return response()->json(null, 204);
     }
 }

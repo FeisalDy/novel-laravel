@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NovelController;
 use App\Http\Controllers\ChapterController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +18,11 @@ use App\Http\Controllers\ChapterController;
 
 
 Route::group([
-    // 'middleware' => 'auth:sanctum'
+    'middleware' => 'auth:sanctum'
 ], function () {
     Route::apiResource('/novels', NovelController::class);
+
     Route::apiResource('/chapters', ChapterController::class);
+
+    Route::get('/user', UserController::class);
 });

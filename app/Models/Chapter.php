@@ -13,11 +13,8 @@ class Chapter extends Model
 {
     use HasFactory, HasApiTokens, Notifiable, HasNovel, ModelHelpers;
 
-    protected $fillable = [
-        'novel_id',
-        'title',
-        'content',
-    ];
+    protected $fillable = ['title', 'content', 'novel_id'];
+
 
     public function id(): string
     {
