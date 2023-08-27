@@ -16,13 +16,18 @@ use App\Http\Controllers\UserController;
 |
 */
 
+Route::apiResource('/novels', NovelController::class)->only(['index', 'show']);
+
+Route::apiResource('/chapters', ChapterController::class)->only(['index', 'show']);
+Route::get('/chapters/novel/{novel_id}', [ChapterController::class, 'getChapterByNovelId']);
+
 
 Route::group([
     'middleware' => 'auth:sanctum'
 ], function () {
-    Route::apiResource('/novels', NovelController::class);
+    Route::apiResource('/novels', NovelController::class)->except(['index', 'show']);
 
-    Route::apiResource('/chapters', ChapterController::class);
+    Route::apiResource('/chapters', ChapterController::class)->except(['index', 'show']);
 
     Route::get('/user', UserController::class);
 });

@@ -81,4 +81,12 @@ class ChapterController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function getChapterByNovelId($novel_id)
+    {
+        $chapter = Chapter::where('novel_id', $novel_id)->get();
+        return (new ChapterCollection($chapter))
+            ->response()
+            ->setStatusCode(200);
+    }
 }

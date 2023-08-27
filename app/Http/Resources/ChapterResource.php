@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\NovelResource; // Import your NovelResource
 
 class ChapterResource extends JsonResource
 {
@@ -17,9 +18,13 @@ class ChapterResource extends JsonResource
         return [
             'type' => 'chapters',
             'id' => $this->id(),
+            'novel_id' => $this->novel_id(),
             'attributes' => [
                 'title' => $this->title(),
                 'content' => $this->content(),
+            ],
+            'relationships' => [
+                'novel' => NovelResource::make($this->novel()),
             ],
             'links' => [
                 'self' => route('chapters.show', $this->id()),

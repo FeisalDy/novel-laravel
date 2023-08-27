@@ -28,6 +28,10 @@ class Chapter extends Model
     {
         return (string) $this->content;
     }
+    public function novel_id(): string
+    {
+        return (string) $this->novel_id;
+    }
 
     public function novels()
     {

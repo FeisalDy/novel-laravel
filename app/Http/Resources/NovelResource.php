@@ -28,9 +28,9 @@ class NovelResource extends JsonResource
                 'self' => route('novels.show', $this->id()),
                 'related' => route('novels.show', $this->title()),
             ],
-            'relationships' => [
-                'data' => ChapterResource::collection($this->chapters),
-            ],
+            // 'relationships' => [
+            //     'data' => ChapterResource::collection($this->chapters),
+            // ],
         ];
     }
     public function with($request)
