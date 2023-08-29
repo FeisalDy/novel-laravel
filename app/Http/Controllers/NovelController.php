@@ -12,10 +12,21 @@ class NovelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new NovelCollection(Novel::all());
+        $sort = $request->query('sort', 'latest'); // Default to 'latest' if not provided
+
+        $query = Novel::query();
+
+        if ($sort === 'latest') {
+            $query->orderBy('created_at', 'desc');
+        } elseif ($sort === 'oldest') {
+            $query->orderBy('created_at', 'asc');
+        }
+
+        return new NovelCollection($query->paginate(20));
     }
+
 
     /**
      * Store a newly created resource in storage.
